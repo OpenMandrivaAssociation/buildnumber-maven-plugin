@@ -1,6 +1,6 @@
 Name:           buildnumber-maven-plugin
 Version:        1.0
-Release:        2
+Release:        4
 Summary:        Build Number Maven Plugin
 
 Group:          Development/Java
