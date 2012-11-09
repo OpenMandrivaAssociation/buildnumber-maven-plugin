@@ -1,0 +1,34 @@
+From 5c3685fea93f280bd56e8004afdde7da313154a1 Mon Sep 17 00:00:00 2001
+From: Stanislav Ochotnicky <sochotnicky@redhat.com>
+Date: Mon, 18 Apr 2011 13:18:28 +0200
+Subject: [PATCH 2/2] Remove maven-scm-provider-svnjava dependency
+
+---
+ pom.xml |   11 -----------
+ 1 files changed, 0 insertions(+), 11 deletions(-)
+
+diff --git a/pom.xml b/pom.xml
+index bd64386..99f56b4 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -156,17 +156,6 @@
+       <version>${maven.scm.version}</version>
+     </dependency>
+     <dependency>
+-      <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
+-      <artifactId>maven-scm-provider-svnjava</artifactId>
+-      <version>1.13</version>
+-      <exclusions>
+-        <exclusion>
+-          <groupId>org.tmatesoft.svnkit</groupId>
+-          <artifactId>svnkit</artifactId>        
+-        </exclusion>
+-      </exclusions>          
+-    </dependency>    
+-    <dependency>
+       <groupId>org.codehaus.plexus</groupId>
+       <artifactId>plexus-utils</artifactId> 
+       <version>2.0.5</version>
+-- 
+1.7.4.4
+
