@@ -1,17 +1,15 @@
 %{?_javapackages_macros:%_javapackages_macros}
 Name:           buildnumber-maven-plugin
-Version:        1.2
-Release:        6.1%{?dist}
+Version:        1.3
+Release:        1.1
 Summary:        Build Number Maven Plugin
 
-
+Group:          System/Libraries
 License:        MIT and ASL 2.0
-URL:            http://svn.codehaus.org/mojo/tags/buildnumber-maven-plugin-1.2
+URL:            http://svn.codehaus.org/mojo/tags/buildnumber-maven-plugin-%{version}
 
-# svn export http://svn.codehaus.org/mojo/tags/buildnumber-maven-plugin-1.2 buildnumber-maven-plugin
-# tar caf buildnumber-maven-plugin-1.2.tar.xz buildnumber-maven-plugin
-Source0:        buildnumber-maven-plugin-1.2.tar.xz
-Source2:        http://www.apache.org/licenses/LICENSE-2.0.txt
+Source0:        http://central.maven.org/maven2/org/codehaus/mojo/%{name}/%{version}/%{name}-%{version}-source-release.zip
+Source1:        http://www.apache.org/licenses/LICENSE-2.0.txt
 
 BuildArch: 	noarch
 
@@ -21,27 +19,11 @@ BuildRequires: java-devel >= 1:1.6.0
 
 # Maven and its dependencies
 BuildRequires: maven-local
-BuildRequires: maven-plugin-plugin
-BuildRequires: maven-resources-plugin
-BuildRequires: maven-compiler-plugin
-BuildRequires: maven-install-plugin
-BuildRequires: maven-javadoc-plugin
-BuildRequires: maven-jar-plugin
-BuildRequires: maven-enforcer-plugin
-BuildRequires: maven-invoker-plugin
-BuildRequires: maven-surefire-provider-junit
-BuildRequires: maven-surefire-plugin
-BuildRequires: maven-plugin-cobertura
-BuildRequires: plexus-containers-component-javadoc
-BuildRequires: plexus-containers-container-default
-BuildRequires: plexus-utils
+BuildRequires: cobertura-maven-plugin
 BuildRequires: jna
-BuildRequires: mojo-parent
-BuildRequires: maven-project
 BuildRequires: maven-scm
 
-
-Requires: java
+Requires: java-headless
 Requires: maven
 Requires: maven-project
 Requires: maven-scm
@@ -71,7 +53,7 @@ SCM system. Note that currently, the only supported SCM is subversion.
 
 
 %package javadoc
-
+Group:          Documentation
 Summary:        Javadoc for %{name}
 Requires:       jpackage-utils
 
@@ -79,50 +61,36 @@ Requires:       jpackage-utils
 API documentation for %{name}.
 
 %prep
-%setup -q -n %{name}
-cp -p %{SOURCE2} .
+%setup -q
+cp -p %{SOURCE1} .
 
 %pom_remove_dep com.google.code.maven-scm-provider-svnjava:maven-scm-provider-svnjava
 %pom_remove_dep org.tmatesoft.svnkit:svnkit
+%pom_remove_plugin :maven-enforcer-plugin
+%pom_remove_plugin :maven-invoker-plugin
 
 %build
-
-# tests skipped due to invoker problems with local repository tests
-mvn-rpmbuild -DskipTests=true \
-        -Dmaven.test.skip=true \
-        -Dmaven.compile.target=1.5 \
-        install javadoc:aggregate
+%mvn_build
 
 %install
+%mvn_install
 
-# jars
-install -d -m 0755 %{buildroot}%{_javadir}
-install -m 644 target/%{name}-%{version}.jar   %{buildroot}%{_javadir}/%{name}.jar
-
-
-# poms
-install -d -m 755 %{buildroot}%{_mavenpomdir}
-install -pm 644 pom.xml \
-    %{buildroot}%{_mavenpomdir}/JPP-%{name}.pom
-
-%add_maven_depmap JPP-%{name}.pom %{name}.jar
-
-# javadoc
-install -d -m 0755 %{buildroot}%{_javadocdir}/%{name}
-cp -pr target/site/api*/* %{buildroot}%{_javadocdir}/%{name}
-
-
-%files
+%files -f .mfiles
 %doc LICENSE.txt LICENSE-2.0.txt
-%{_javadir}/%{name}.jar
-%{_mavenpomdir}/JPP-%{name}.pom
-%{_mavendepmapfragdir}/%{name}
 
-%files javadoc
+%files javadoc -f .mfiles-javadoc
 %doc LICENSE.txt LICENSE-2.0.txt
-%{_javadocdir}/%{name}
 
 %changelog
+* Fri Jun 13 2014 Alexander Kurtakov <akurtako@redhat.com> 1.3-1
+- Update to upstream 1.3 release.
+
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
+* Tue Mar 04 2014 Stanislav Ochotnicky <sochotnicky@redhat.com> - 1.2-7
+- Use Requires: java-headless rebuild (#1067528)
+
 * Sat Aug 24 2013 Mat Booth <fedora@matbooth.co.uk> - 1.2-6
 - Remove unneeded BR on maven2-common-poms
 
@@ -209,3 +177,4 @@ cp -pr target/site/api*/* %{buildroot}%{_javadocdir}/%{name}
 
 * Mon May 24 2010 Weinan Li <weli@redhat.com> - 1.0-0.1.b4
 - Initial package
+
