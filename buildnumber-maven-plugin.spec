@@ -1,7 +1,7 @@
 %{?_javapackages_macros:%_javapackages_macros}
 Name:           buildnumber-maven-plugin
 Version:        1.3
-Release:        1.2
+Release:        1.3
 Summary:        Build Number Maven Plugin
 
 Group:          System/Libraries
