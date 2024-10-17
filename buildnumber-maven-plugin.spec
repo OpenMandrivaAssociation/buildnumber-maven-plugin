@@ -6,7 +6,7 @@ Summary:        Build Number Maven Plugin
 
 Group:          System/Libraries
 License:        MIT and ASL 2.0
-URL:            http://svn.codehaus.org/mojo/tags/buildnumber-maven-plugin-%{version}
+URL:            https://svn.codehaus.org/mojo/tags/buildnumber-maven-plugin-%{version}
 
 Source0:        http://central.maven.org/maven2/org/codehaus/mojo/%{name}/%{version}/%{name}-%{version}-source-release.zip
 Source1:        http://www.apache.org/licenses/LICENSE-2.0.txt
